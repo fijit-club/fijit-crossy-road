@@ -2,6 +2,7 @@
 using UnityEngine;
 using System.Collections;
 using DG.Tweening;
+using TMPro;
 
 public class PlayerMovementScript : MonoBehaviour {
     public bool canMove = false;
@@ -17,7 +18,13 @@ public class PlayerMovementScript : MonoBehaviour {
     public float leftRotation = -45.0f;
     public float rightRotation = 90.0f;
     [SerializeField] private LayerMask layersToIgnore;
-    
+    [SerializeField] private LayerMask layersToIgnore2;
+    [SerializeField] private GameObject gameOver;
+    [SerializeField] private GameObject pauseMenu;
+    [SerializeField] private TMP_Text[] playScores;
+    [SerializeField] private CameraMovement camMove;
+    [SerializeField] private GameObject splash;
+
     private bool moving;
     private float elapsedTime;
 
@@ -62,6 +69,9 @@ public class PlayerMovementScript : MonoBehaviour {
 
             _initMousePosition.x /= Screen.width;
             _initMousePosition.y /= Screen.height;
+            
+            foreach (var playScore in playScores)
+                playScore.text = score.ToString();
         }
         
         // If player is moving, update the player position, else receive input from user.
@@ -183,7 +193,7 @@ public class PlayerMovementScript : MonoBehaviour {
         var newPosition = current + distance;
 
         // Don't move if blocked by obstacle.
-        if (Physics.CheckSphere(newPosition + new Vector3(0.0f, 0.5f, 0.0f), 0.1f, ~layersToIgnore)) 
+        if (Physics.CheckSphere(newPosition + new Vector3(0.0f, 0.5f, 0.0f), 0.1f, ~layersToIgnore2)) 
             return;
 
         target = newPosition;
@@ -266,6 +276,30 @@ public class PlayerMovementScript : MonoBehaviour {
         }
     }
 
+    private void OnTriggerEnter(Collider col)
+    {
+        if (col.CompareTag("Death") || col.CompareTag("Water"))
+        {
+            canMove = false;
+            StartCoroutine(DelayedDeath());
+        }
+
+        if (col.CompareTag("Water"))
+        {
+            camMove.enabled = false;
+
+            var pos = transform.position;
+            pos.y = 1f;
+            Instantiate(splash, pos, Quaternion.Euler(-90, 0, 0));
+        }
+    }
+
+    private IEnumerator DelayedDeath()
+    {
+        yield return new WaitForSeconds(2f);
+        GameOver();
+    }
+
     private float Lerp(float min, float max, float weight) {
         return min + (max - min) * weight;
     }
@@ -299,11 +333,11 @@ public class PlayerMovementScript : MonoBehaviour {
     }
 
     public void GameOver() {
-        // When game over, disable moving.
         canMove = false;
+        pauseMenu.SetActive(false);
+        Time.timeScale = 1f;
+        gameOver.SetActive(true);
 
-        // Call GameOver at game state controller (instead of sending messages).
-        gameStateController.GameOver();
     }
 
     public void Reset() {

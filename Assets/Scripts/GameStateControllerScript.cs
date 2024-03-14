@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
+using NotSpaceInvaders;
+using TMPro;
 using UnityEngine.UI;
 
 public class GameStateControllerScript : MonoBehaviour {
@@ -7,13 +9,11 @@ public class GameStateControllerScript : MonoBehaviour {
     public GameObject playCanvas;
     public GameObject gameOverCanvas;
 
-    public Text playScore;
-    public Text gameOverScore;
-    public Text topScore;
-    public Text playerName;
-
     public int score, top;
 
+    [SerializeField] private TMP_Text[] highScores;
+    
+    
     private GameObject currentCanvas;
     private string state;
 
@@ -22,13 +22,23 @@ public class GameStateControllerScript : MonoBehaviour {
     public void Start() {
         currentCanvas = null;
         MainMenu();
+
+        foreach (var highScore in highScores)
+        {
+            highScore.text = Bridge.GetInstance().thisPlayerInfo.highScore.ToString();
+        }
+    }
+
+    public void StartGame()
+    {
+        foreach (var highScore in highScores)
+        {
+            highScore.text = Bridge.GetInstance().thisPlayerInfo.highScore.ToString();
+        }
     }
 
     public void Update() {
         if (state == "play") {
-            topScore.text = PlayerPrefs.GetInt("Top").ToString();
-            playScore.text = score.ToString();
-            playerName.text = PlayerPrefs.GetString("Name");
         }
         else if (state == "mainmenu") {
             if (Input.GetButtonDown("Cancel")) {
@@ -68,7 +78,6 @@ public class GameStateControllerScript : MonoBehaviour {
         CurrentCanvas = gameOverCanvas;
         state = "gameover";
 
-        gameOverScore.text = score.ToString();
         if (score > top) {
             PlayerPrefs.SetInt("Top", top);
         }

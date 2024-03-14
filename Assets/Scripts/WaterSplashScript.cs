@@ -19,8 +19,6 @@ public class WaterSplashScript : MonoBehaviour {
         if (other.tag == "Player")
         {
             // Note to self: splash direction is ignored
-            //var o = (GameObject)Instantiate(splashPrefab, other.transform.position, Quaternion.Euler(-90, 0, 0));
-            //Destroy(o, splashLifetime);
 
             //other.SendMessage("GameOver");
         }

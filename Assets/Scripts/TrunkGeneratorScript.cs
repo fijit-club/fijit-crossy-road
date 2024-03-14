@@ -20,26 +20,44 @@ public class TrunkGeneratorScript : MonoBehaviour {
 
     private List<GameObject> trunks;
 
+    private Vector3 _screenCenter;
+    private bool _spawnFirst;
+
     public void Start() {
 	    if (randomizeValues) {
             speed = Random.Range(2.0f, 4f);
             length = Random.Range(1, 4);
             interval = length / speed + Random.Range(2.0f, 4.0f);
         }
-        
+
+        elapsedTime = 0.0f;
+        trunks = new List<GameObject>();
+	}
+
+    private void Spawn()
+    {
         var position = transform.position + new Vector3(direction == Direction.Left ? rightX : leftX, 0, 0);
         var o = (GameObject)Instantiate(trunkPrefab, position, Quaternion.identity);
         o.GetComponent<TrunkFloatingScript>().speedX = (int)direction * speed;
 
         var scale = o.transform.localScale;
         o.transform.localScale = new Vector3(scale.x, scale.y, scale.z * 3);
-
-        elapsedTime = 0.0f;
-        trunks = new List<GameObject>();
         trunks.Add(o);
-	}
+    }
 	
     public void Update() {
+        _screenCenter = Camera.main.ScreenToWorldPoint( new Vector3(Screen.width / 2, Screen.height / 2, 3.17f));
+
+        float distance = (_screenCenter.z > transform.position.z)
+            ? _screenCenter.z - transform.position.z
+            : transform.position.z - _screenCenter.z;
+        if (distance > 24f) return;
+
+        if (!_spawnFirst)
+        {
+            _spawnFirst = true;
+            Spawn();
+        }
         elapsedTime += Time.deltaTime;
 
         if (elapsedTime > interval) {

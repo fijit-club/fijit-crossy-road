@@ -17,7 +17,11 @@ public class RoadCarGenerator : MonoBehaviour {
 
     private float elapsedTime;
 
+    private Vector3 _screenCenter;
+
     private List<GameObject> cars;
+
+    private bool _spawnFirst;
 
     public void Start() {
         if (randomizeValues) {
@@ -28,7 +32,11 @@ public class RoadCarGenerator : MonoBehaviour {
 
         elapsedTime = 0.0f;
         cars = new List<GameObject>();
-        
+        _screenCenter = Camera.main.ScreenToWorldPoint( new Vector3(Screen.width / 2, Screen.height / 2, 3.17f));
+    }
+
+    private void Spawn()
+    {
         var position = transform.position + new Vector3(direction == Direction.Left ? rightX : leftX, 0.6f, 0);
         var o = (GameObject)Instantiate(carPrefabs[Random.Range(0, carPrefabs.Length)], position, Quaternion.Euler(-90, 90, 0));
         o.GetComponent<CarScript>().speedX = (int)direction * speed;
@@ -41,7 +49,21 @@ public class RoadCarGenerator : MonoBehaviour {
         cars.Add(o);
     }
 
-    public void Update() {
+    public void Update()
+    {
+        _screenCenter = Camera.main.ScreenToWorldPoint( new Vector3(Screen.width / 2, Screen.height / 2, 3.17f));
+
+        float distance = (_screenCenter.z > transform.position.z)
+            ? _screenCenter.z - transform.position.z
+            : transform.position.z - _screenCenter.z;
+        if (distance > 24f) return;
+
+        if (!_spawnFirst)
+        {
+            _spawnFirst = true;
+            Spawn();
+        }
+        
         elapsedTime += Time.deltaTime;
 
         if (elapsedTime > interval) {

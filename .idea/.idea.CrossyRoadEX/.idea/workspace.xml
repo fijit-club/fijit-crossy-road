@@ -3,10 +3,11 @@
   <component name="ChangeListManager">
     <list default="true" id="6bbb6392-e857-48cb-9628-10b474e87477" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CrossyRoadEX/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CrossyRoadEX/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Lines/RoadLine.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Lines/RoadLine.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Objects/Vehicles/Materials/veh_ambulance_texture0.mat" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Objects/Vehicles/Materials/veh_ambulance_texture0.mat" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scenes/MainGame.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/MainGame.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/GameStateControllerScript.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/GameStateControllerScript.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/PlayerMovementScript.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/PlayerMovementScript.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ProjectSettings/TagManager.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/TagManager.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/RoadCarGenerator.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/RoadCarGenerator.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectSettings/ProjectSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/ProjectSettings.asset" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -73,7 +74,7 @@
       <workItem from="1710313331701" duration="15568000" />
       <workItem from="1710332609395" duration="1171000" />
       <workItem from="1710336057281" duration="177000" />
-      <workItem from="1710397059312" duration="11713000" />
+      <workItem from="1710397059312" duration="14217000" />
     </task>
     <servers />
   </component>

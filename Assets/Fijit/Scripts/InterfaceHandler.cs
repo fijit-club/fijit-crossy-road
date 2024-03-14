@@ -1,8 +1,14 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class InterfaceHandler : MonoBehaviour
 {
     [SerializeField] private PlayerMovementScript player;
+
+    public void Restart()
+    {
+        SceneManager.LoadScene(0);
+    }
     
     public void PauseGame()
     {

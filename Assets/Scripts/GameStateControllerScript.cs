@@ -45,7 +45,6 @@ public class GameStateControllerScript : MonoBehaviour {
                 Application.Quit();
             }
             else if (Input.anyKeyDown) {
-                Play();
             }
         }
         else if (state == "gameover") {

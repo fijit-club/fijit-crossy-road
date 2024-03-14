@@ -3,6 +3,7 @@ using UnityEngine;
 using System.Collections;
 using DG.Tweening;
 using TMPro;
+using UnityEngine.EventSystems;
 
 public class PlayerMovementScript : MonoBehaviour {
     public bool canMove = false;
@@ -60,9 +61,18 @@ public class PlayerMovementScript : MonoBehaviour {
         score = 0;
         gameStateController = GameObject.Find("GameStateController").GetComponent<GameStateControllerScript>();
     }
+    
+    private static bool ButtonPress()
+    {
+        if (!EventSystem.current.currentSelectedGameObject) return false;
+        bool pointerOverUI = EventSystem.current.currentSelectedGameObject.CompareTag("BUTTON");
+        return pointerOverUI;
+    }
 
-    public void Update() {
-        if (Input.GetMouseButtonDown(0))
+    public void Update()
+    {
+        if (pauseMenu.activeInHierarchy || gameOver.activeInHierarchy) return;
+        if (Input.GetMouseButtonDown(0) && !ButtonPress())
         {
             _initMousePosition = Input.mousePosition;
             _initMousePosition.z = -4.23f;
@@ -78,7 +88,7 @@ public class PlayerMovementScript : MonoBehaviour {
         if (moving)
         {
             MovePlayer();
-            if (Input.GetMouseButtonDown(0))
+            if (Input.GetMouseButtonDown(0) && !ButtonPress())
             {
                 _cachedMove = true;
             }
@@ -152,7 +162,7 @@ public class PlayerMovementScript : MonoBehaviour {
     private void HandleInput() {	
 		// Handle mouse click
 
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && !ButtonPress())
         {
             transform.GetChild(1).DOScaleY(.5f, .1f).SetEase(Ease.OutBounce);
             _initMousePosition = Input.mousePosition;
@@ -162,7 +172,7 @@ public class PlayerMovementScript : MonoBehaviour {
             _initMousePosition.y /= Screen.height;
         }
         
-		if (Input.GetMouseButtonUp(0)) {
+		if (Input.GetMouseButtonUp(0) && !ButtonPress()) {
             transform.GetChild(1).DOScaleY(1f, .1f).SetEase(Ease.OutBounce);
             _finalMousePosition = Input.mousePosition;
             _finalMousePosition.z = -4.23f;
@@ -170,23 +180,7 @@ public class PlayerMovementScript : MonoBehaviour {
             _finalMousePosition.x /= Screen.width;
             _finalMousePosition.y /= Screen.height;
 			HandleMouseClick();
-			return;
 		}
-		
-        if (Input.GetKeyDown(KeyCode.W)) {
-            Move(new Vector3(0, 0, 1));
-        }
-        else if (Input.GetKeyDown(KeyCode.S)) {
-            Move(new Vector3(0, 0, -1));
-        }
-        else if (Input.GetKeyDown(KeyCode.A)) {
-            if (Mathf.RoundToInt(current.x) > minX)
-                Move(new Vector3(-1, 0, 0));
-        }
-        else if (Input.GetKeyDown(KeyCode.D)) {
-            if (Mathf.RoundToInt(current.x) < maxX)
-                Move(new Vector3(1, 0, 0));
-        }
     }
 
     private void Move(Vector3 distance) {
@@ -287,6 +281,7 @@ public class PlayerMovementScript : MonoBehaviour {
         if (col.CompareTag("Water"))
         {
             camMove.enabled = false;
+            GetComponent<BoxCollider>().enabled = false;
 
             var pos = transform.position;
             pos.y = 1f;

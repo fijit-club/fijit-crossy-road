@@ -1,6 +1,7 @@
 ﻿using System;
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using DG.Tweening;
 using TMPro;
 using UnityEngine.EventSystems;
@@ -46,8 +47,12 @@ public class PlayerMovementScript : MonoBehaviour {
     private Vector3 _finalMousePosition;
 
     private bool _enteringTrunk;
+    private bool _enteredTrunk;
 
     private Transform _nearestTrunkPoint;
+    private int _nearestPointIndex;
+    private List<Transform> _trunkPoints;
+    private TrunkFloatingScript _trunkFloatingScript;
 
     public void Start() {
         current = transform.position;
@@ -115,7 +120,10 @@ public class PlayerMovementScript : MonoBehaviour {
                 EnterTrunk(hit);
             }
             else
+            {
+                _enteredTrunk = false;
                 Move(new Vector3(0, 0, 3));
+            }
         }
         
         if (Mathf.Abs(direction.y) > Mathf.Abs(direction.x))
@@ -127,7 +135,10 @@ public class PlayerMovementScript : MonoBehaviour {
                     EnterTrunk(hit);
                 }
                 else
+                {
+                    _enteredTrunk = false;
                     Move(new Vector3(0, 0, -3));
+                }
             }
             else
             {
@@ -136,25 +147,81 @@ public class PlayerMovementScript : MonoBehaviour {
                     EnterTrunk(hit);
                 }
                 else
+                {
+                    _enteredTrunk = false;
                     Move(new Vector3(0, 0, 3));
+                }
             }
         }
         else if (Mathf.Abs(direction.y) < Mathf.Abs(direction.x))
         {
-            if (direction.x < 0f)
-                Move(new Vector3(-3, 0, 0));
+            if (!_enteredTrunk)
+            {
+                if (direction.x < 0f)
+                    Move(new Vector3(-3, 0, 0));
+                else
+                    Move(new Vector3(3, 0, 0));
+            }
             else
-                Move(new Vector3(3, 0, 0));
+            {
+                print("ENTERED");
+                if (_nearestPointIndex == 0)
+                {
+                    if (direction.x < 0f)
+                    {
+                        var dir = _trunkPoints[1].position - transform.position;
+                        _nearestPointIndex = 1;
+                        _trunkFloatingScript.nearestPointIndex = 1;
+                        _nearestTrunkPoint = _trunkFloatingScript.trunkPoints[1];
+                        print(_nearestTrunkPoint.name);
+                        Move(dir);
+                    }
+                    else
+                        Move(new Vector3(3, 0, 0));
+                }
+                else if (_nearestPointIndex == 1)
+                {
+                    if (direction.x > 0f)
+                    {
+                        var dir = _trunkPoints[0].position - transform.position;
+                        _nearestPointIndex = 0;
+                        _trunkFloatingScript.nearestPointIndex = 0;
+                        _nearestTrunkPoint = _trunkFloatingScript.trunkPoints[0];
+                        print(_nearestTrunkPoint.name);
+                        Move(dir);
+                    }
+                    else
+                        Move(new Vector3(-3, 0, 0));
+                }
+            }
         }
+    }
+    
+    Transform GetClosestEnemy(Transform[] enemies)
+    {
+        Transform tMin = null;
+        float minDist = Mathf.Infinity;
+        Vector3 currentPos = transform.position;
+        foreach (Transform t in enemies)
+        {
+            float dist = Vector3.Distance(t.position, currentPos);
+            if (dist < minDist)
+            {
+                tMin = t;
+                minDist = dist;
+            }
+        }
+        return tMin;
     }
 
     private void EnterTrunk(RaycastHit hit)
     {
         _enteringTrunk = true;
-        var trunkFloatingScript = hit.transform.parent.GetComponent<TrunkFloatingScript>();
-        var trunkPoints = trunkFloatingScript.trunkPoints;
-        _nearestTrunkPoint = trunkPoints[0]; // TODO add a check NEAREST POINT FUNCTION
-        trunkFloatingScript.nearestPointIndex = 0;
+        _enteredTrunk = true;
+        _trunkFloatingScript = hit.transform.parent.GetComponent<TrunkFloatingScript>();
+        _trunkPoints = _trunkFloatingScript.trunkPoints;
+        _nearestTrunkPoint = GetClosestEnemy(_trunkPoints.ToArray()); // TODO add a check NEAREST POINT FUNCTION
+        _nearestPointIndex = _trunkFloatingScript.nearestPointIndex = _trunkPoints.IndexOf(_nearestTrunkPoint);;
         var dir = _nearestTrunkPoint.position - transform.position;
         Move(dir);
     }
@@ -226,8 +293,9 @@ public class PlayerMovementScript : MonoBehaviour {
     private void MovePlayer() {
         elapsedTime += Time.deltaTime;
 
-        if (_enteringTrunk)
+        if (_enteringTrunk || _enteredTrunk)
         {
+            print("ENTERING NEAREST POINT");
             target = _nearestTrunkPoint.position;
         }
         
@@ -243,7 +311,7 @@ public class PlayerMovementScript : MonoBehaviour {
         if (Math.Abs(weight - 1) < .01f)
         {
             result = target;
-            if (_enteringTrunk)
+            if (_enteringTrunk || _enteredTrunk)
                 transform.position = _nearestTrunkPoint.position;
         }
             

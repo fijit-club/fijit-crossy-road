@@ -14,7 +14,9 @@ public class TrunkGeneratorScript : MonoBehaviour {
     public float leftX = -20.0f;
     public float rightX = 20.0f;
 
-    public GameObject trunkPrefab;
+    public GameObject[] trunkPrefabs;
+
+    private GameObject trunkPrefab;
     
     private float elapsedTime;
 
@@ -30,6 +32,8 @@ public class TrunkGeneratorScript : MonoBehaviour {
             interval = length / speed + Random.Range(2.0f, 4.0f);
         }
 
+        trunkPrefab = trunkPrefabs[Random.Range(0, 2)];
+        
         elapsedTime = 0.0f;
         trunks = new List<GameObject>();
 	}

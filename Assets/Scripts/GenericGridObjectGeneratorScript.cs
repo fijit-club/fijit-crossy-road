@@ -18,20 +18,20 @@ public class GenericGridObjectGeneratorScript : MonoBehaviour {
     public void Start() {
         generatedObjects = new List<GameObject>();
 
-        for (var x = minPosition.x; x <= maxPosition.x; x += gridSize.x) {
-            for (var y = minPosition.y; y <= maxPosition.y; y += gridSize.y) {
-                for (var z = minPosition.z; z <= maxPosition.z; z += gridSize.z) {
-                    bool generate = Random.value < density;
-                    if (generate) {
-                        GameObject prefab = prefabs[Random.Range(0, prefabs.Length)];
-                        var o = (GameObject)Instantiate(prefab, relative ? transform.position + new Vector3(x, y, z) : new Vector3(x, y, z), Quaternion.identity);
-
-                        generatedObjects.Add(o);
-                        OnInstantiate(o);
-                    }
-                }
-            }
-        }
+        // for (var x = minPosition.x; x <= maxPosition.x; x += gridSize.x) {
+        //     for (var y = minPosition.y; y <= maxPosition.y; y += gridSize.y) {
+        //         for (var z = minPosition.z; z <= maxPosition.z; z += gridSize.z) {
+        //             bool generate = Random.value < density;
+        //             if (generate) {
+        //                 GameObject prefab = prefabs[Random.Range(0, prefabs.Length)];
+        //                 var o = (GameObject)Instantiate(prefab, relative ? transform.position + new Vector3(x, y, z) : new Vector3(x, y, z), Quaternion.identity);
+        //
+        //                 generatedObjects.Add(o);
+        //                 OnInstantiate(o);
+        //             }
+        //         }
+        //     }
+        // }
 	}
 
     public void OnDestroy() {

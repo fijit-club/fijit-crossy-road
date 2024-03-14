@@ -67,7 +67,6 @@ public class LevelControllerScript : MonoBehaviour {
                         trunkGeneratorScript.direction = TrunkGeneratorScript.Direction.Left;
                     else
                         trunkGeneratorScript.direction = TrunkGeneratorScript.Direction.Right;
-                    print("LAST WAS WATER AT:" + lines.Values.Count);
                 }
 
                 line.transform.localScale = new Vector3(1, 1, 3);
@@ -79,10 +78,14 @@ public class LevelControllerScript : MonoBehaviour {
         }
 
         foreach (var line in new List<GameObject>(lines.Values)) {
-            var lineZ = line.transform.position.z;
-            if (lineZ < playerZ - lineBehind) {
-                lines.Remove((int)lineZ);
-                Destroy(line);
+            if (line != null)
+            {
+                var lineZ = line.transform.position.z;
+                if (lineZ < playerZ - lineBehind)
+                {
+                    lines.Remove((int) lineZ);
+                    Destroy(line);
+                }
             }
         }
 	}

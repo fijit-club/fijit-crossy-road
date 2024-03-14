@@ -26,9 +26,17 @@ public class TrunkGeneratorScript : MonoBehaviour {
             length = Random.Range(1, 4);
             interval = length / speed + Random.Range(2.0f, 4.0f);
         }
+        
+        var position = transform.position + new Vector3(direction == Direction.Left ? rightX : leftX, 0, 0);
+        var o = (GameObject)Instantiate(trunkPrefab, position, Quaternion.identity);
+        o.GetComponent<TrunkFloatingScript>().speedX = (int)direction * speed;
+
+        var scale = o.transform.localScale;
+        o.transform.localScale = new Vector3(scale.x, scale.y, scale.z * 3);
 
         elapsedTime = 0.0f;
         trunks = new List<GameObject>();
+        trunks.Add(o);
 	}
 	
     public void Update() {

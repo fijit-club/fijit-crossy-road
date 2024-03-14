@@ -22,12 +22,23 @@ public class RoadCarGenerator : MonoBehaviour {
     public void Start() {
         if (randomizeValues) {
             direction = Random.value < 0.5f ? Direction.Left : Direction.Right;
-            speed = Random.Range(4.0f, 6.0f);
-            interval = Random.Range(5.0f, 9.0f);
+            speed = Random.Range(6f, 8f);
+            interval = Random.Range(2.0f, 4.0f);
         }
 
         elapsedTime = 0.0f;
         cars = new List<GameObject>();
+        
+        var position = transform.position + new Vector3(direction == Direction.Left ? rightX : leftX, 0.6f, 0);
+        var o = (GameObject)Instantiate(carPrefabs[Random.Range(0, carPrefabs.Length)], position, Quaternion.Euler(-90, 90, 0));
+        o.GetComponent<CarScript>().speedX = (int)direction * speed;
+
+        if (direction < 0)
+            o.transform.rotation = Quaternion.Euler(-90, 270, 0);
+        else
+            o.transform.rotation = Quaternion.Euler(-90, 90, 0);
+            
+        cars.Add(o);
     }
 
     public void Update() {

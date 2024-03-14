@@ -77,12 +77,6 @@ public class PlayerMovementScript : MonoBehaviour {
             // Update current to match integer position (not fractional).
             current = new Vector3(Mathf.Round(transform.position.x), Mathf.Round(transform.position.y), Mathf.Round(transform.position.z));
 
-            if (_cachedMove)
-            {
-                HandleInput();
-                _cachedMoveOccured = true;
-            }
-            
             if (canMove)
                 HandleInput();
         }
@@ -96,8 +90,6 @@ public class PlayerMovementScript : MonoBehaviour {
 
         if (Mathf.Abs(direction.x) < .1f && Mathf.Abs(direction.y) < .1f)
         {
-            print(direction.x);
-            print(direction.y);
             if (Physics.Raycast(transform.position, new Vector3(0, 0, 3), out var hit, 3f, layersToIgnore))
             {
                 EnterTrunk(hit);
@@ -150,7 +142,7 @@ public class PlayerMovementScript : MonoBehaviour {
     private void HandleInput() {	
 		// Handle mouse click
 
-        if (Input.GetMouseButtonDown(0) || _cachedMove)
+        if (Input.GetMouseButtonDown(0))
         {
             transform.GetChild(1).DOScaleY(.5f, .1f).SetEase(Ease.OutBounce);
             _initMousePosition = Input.mousePosition;
@@ -160,7 +152,7 @@ public class PlayerMovementScript : MonoBehaviour {
             _initMousePosition.y /= Screen.height;
         }
         
-		if (Input.GetMouseButtonUp(0) || _cachedMove) {
+		if (Input.GetMouseButtonUp(0)) {
             transform.GetChild(1).DOScaleY(1f, .1f).SetEase(Ease.OutBounce);
             _finalMousePosition = Input.mousePosition;
             _finalMousePosition.z = -4.23f;

@@ -3,11 +3,12 @@
   <component name="ChangeListManager">
     <list default="true" id="6bbb6392-e857-48cb-9628-10b474e87477" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CrossyRoadEX/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CrossyRoadEX/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Lines/RoadLine.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Lines/RoadLine.prefab" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Lines/WaterLine.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Lines/WaterLine.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Objects/Longer Trunk.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Objects/Longer Trunk.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Prefabs/Objects/Trunk.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Prefabs/Objects/Trunk.prefab" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scenes/MainGame.unity" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scenes/MainGame.unity" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/PlayerMovementScript.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/PlayerMovementScript.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/TrunkGeneratorScript.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/TrunkGeneratorScript.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/TrunkFloatingScript.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/TrunkFloatingScript.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProjectSettings/TagManager.asset" beforeDir="false" afterPath="$PROJECT_DIR$/ProjectSettings/TagManager.asset" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -74,7 +75,8 @@
       <workItem from="1710313331701" duration="15568000" />
       <workItem from="1710332609395" duration="1171000" />
       <workItem from="1710336057281" duration="177000" />
-      <workItem from="1710397059312" duration="17120000" />
+      <workItem from="1710397059312" duration="17245000" />
+      <workItem from="1710486864322" duration="1081000" />
     </task>
     <servers />
   </component>

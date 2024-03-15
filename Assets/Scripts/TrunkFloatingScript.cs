@@ -30,6 +30,7 @@ public class TrunkFloatingScript : MonoBehaviour {
     
     public List<Transform> trunkPoints;
     public int nearestPointIndex;
+    [SerializeField] private GameObject[] coins;
     
     private float originalY;
     private bool sinking;
@@ -38,6 +39,9 @@ public class TrunkFloatingScript : MonoBehaviour {
 
     public void Start() {
         originalY = transform.position.y;
+
+        if (Random.Range(0, 4) != 1) return;
+        coins[Random.Range(0, coins.Length)].SetActive(true);
     }
 
     public void Update() {

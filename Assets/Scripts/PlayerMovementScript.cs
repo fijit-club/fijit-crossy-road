@@ -3,6 +3,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
+using NotSpaceInvaders;
 using TMPro;
 using UnityEngine.EventSystems;
 
@@ -17,8 +18,11 @@ public class PlayerMovementScript : MonoBehaviour {
     public GameObject[] leftSide;
     public GameObject[] rightSide;
 
+    public int coins;
+    
     public float leftRotation = -45.0f;
     public float rightRotation = 90.0f;
+    
     [SerializeField] private LayerMask layersToIgnore;
     [SerializeField] private LayerMask layersToIgnore2;
     [SerializeField] private GameObject gameOver;
@@ -26,7 +30,8 @@ public class PlayerMovementScript : MonoBehaviour {
     [SerializeField] private TMP_Text[] playScores;
     [SerializeField] private CameraMovement camMove;
     [SerializeField] private GameObject splash;
-
+    [SerializeField] private TMP_Text[] coinsText;
+    
     private bool moving;
     private float elapsedTime;
 
@@ -155,7 +160,7 @@ public class PlayerMovementScript : MonoBehaviour {
         }
         else if (Mathf.Abs(direction.y) < Mathf.Abs(direction.x))
         {
-            if (!_enteredTrunk)
+            if (!_enteredTrunk || _trunkPoints.Count == 1)
             {
                 if (direction.x < 0f)
                     Move(new Vector3(-3, 0, 0));
@@ -164,7 +169,6 @@ public class PlayerMovementScript : MonoBehaviour {
             }
             else
             {
-                print("ENTERED");
                 if (_nearestPointIndex == 0)
                 {
                     if (direction.x < 0f)
@@ -340,6 +344,15 @@ public class PlayerMovementScript : MonoBehaviour {
 
     private void OnTriggerEnter(Collider col)
     {
+        if (col.CompareTag("Coin"))
+        {
+            coins++;
+            foreach (var coinText in coinsText)
+            {
+                coinText.text = coins.ToString();
+            }
+        }
+        
         if (col.CompareTag("Death") || col.CompareTag("Water"))
         {
             canMove = false;
@@ -400,7 +413,8 @@ public class PlayerMovementScript : MonoBehaviour {
         pauseMenu.SetActive(false);
         Time.timeScale = 1f;
         gameOver.SetActive(true);
-
+        Bridge.GetInstance().UpdateCoins(coins);
+        Bridge.GetInstance().SendScore(score);
     }
 
     public void Reset() {
